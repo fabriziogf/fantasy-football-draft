@@ -177,8 +177,6 @@ Currently coded in `backend/config.py` — change freely:
 ## 9. Acceptance — "we built the right thing" if…
 
 ⬜ Fill in 2–4 concrete checks you'd use to judge success, e.g.:
-- [ ] On draft day, I can enter my slot, mark picks as they happen, and always
-      see a ranked recommendation in under a second.
-- [ ] The recommendations pass my smell test vs. industry consensus, with
-      explainable deviations.
+- [ ] On draft day, I can enter my slot, mark picks as they happen, and always see a ranked recommendation in under a second.
+- [ ] The recommendations pass my smell test vs. industry consensus, with explainable deviations.
 - [ ] _______________
