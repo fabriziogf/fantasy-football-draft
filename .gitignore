@@ -29,3 +29,6 @@ build/
 .DS_Store
 .vscode/
 .idea/
+
+# Generated projection output (reproducible via run_pipeline)
+backend/data/processed/
