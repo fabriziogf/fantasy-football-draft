@@ -66,5 +66,5 @@ keep state synced with the real draft.
 - [x] Phase 1: data + projections
 - [x] Phase 2: valuation (ADP merge, VOR, tiers, unified board)
 - [x] Phase 3: API (draft state, snake math, persistence, VONA recommender)
-- [ ] Phase 4: UI
+- [x] Phase 4: UI (React cockpit: recommendations, roster, search, tiers, undo)
 - [ ] Phase 5: polish
