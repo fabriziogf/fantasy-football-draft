@@ -31,7 +31,7 @@ function assignSlots(roster, benchCount) {
   return { starters, benchSlots }
 }
 
-function SlotRow({ slot, player }) {
+function SlotRow({ slot, player, byeStacked }) {
   return (
     <div className={player ? 'slot filled' : 'slot empty'}>
       <span className="slot-label">{slot}</span>
@@ -40,6 +40,14 @@ function SlotRow({ slot, player }) {
           <span className={posClass(player.position)}>{player.position}</span>
           {player.name}
           <span className="slot-team">{player.team}</span>
+          {player.bye != null && (
+            <span
+              className={byeStacked ? 'slot-bye stacked' : 'slot-bye'}
+              title={byeStacked ? 'Multiple starters share this bye week' : `Bye ${player.bye}`}
+            >
+              b{player.bye}
+            </span>
+          )}
         </span>
       ) : (
         <span className="slot-need">needed</span>
@@ -57,6 +65,13 @@ export default function Roster({ config, draft }) {
     return acc
   }, {})
 
+  // Bye weeks shared by 2+ rostered players (roster-wide bye stacking).
+  const byeCounts = roster.reduce((acc, p) => {
+    if (p.bye != null) acc[p.bye] = (acc[p.bye] || 0) + 1
+    return acc
+  }, {})
+  const isStacked = (p) => p && p.bye != null && byeCounts[p.bye] >= 2
+
   return (
     <div className="roster card">
       <div className="roster-head">
@@ -73,11 +88,11 @@ export default function Roster({ config, draft }) {
       </div>
       <div className="slots">
         {starters.map((s, i) => (
-          <SlotRow key={`s${i}`} {...s} />
+          <SlotRow key={`s${i}`} {...s} byeStacked={isStacked(s.player)} />
         ))}
         <div className="bench-divider">Bench</div>
         {benchSlots.map((s, i) => (
-          <SlotRow key={`b${i}`} {...s} />
+          <SlotRow key={`b${i}`} {...s} byeStacked={isStacked(s.player)} />
         ))}
       </div>
     </div>

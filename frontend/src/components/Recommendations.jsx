@@ -37,6 +37,20 @@ export default function Recommendations({ recs, onPick, busy }) {
                 <span className="tier-chip">T{r.tier}</span>
               </div>
               <div className="rec-reason">{r.reason}</div>
+              {(r.bye_conflict || (r.flags && r.flags.length > 0)) && (
+                <div className="rec-flags">
+                  {r.bye_conflict && (
+                    <span className="flag bye" title={r.bye_conflict.label}>
+                      ⚠ Bye {r.bye_conflict.bye} clash
+                    </span>
+                  )}
+                  {r.flags.map((f) => (
+                    <span key={f.code} className={`flag risk-${r.risk}`} title={f.label}>
+                      {f.label}
+                    </span>
+                  ))}
+                </div>
+              )}
               <div className="rec-stats">
                 <span title="Value over replacement">VOR {fmt(r.vor)}</span>
                 <span title="Value over next available at your next pick">

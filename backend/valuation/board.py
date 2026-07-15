@@ -96,7 +96,8 @@ def build_board(use_cache: bool = True) -> pd.DataFrame:
     cols = [
         "key", "overall_rank", "name", "position", "team", "bye", "age",
         "proj_points", "proj_source", "vor", "pos_rank", "tier",
-        "adp", "adp_stdev", "replacement_points", "player_id",
+        "adp", "adp_stdev", "replacement_points",
+        "total_games", "seasons_played", "player_id",
     ]
     cols = [c for c in cols if c in board.columns]
     return board[cols]

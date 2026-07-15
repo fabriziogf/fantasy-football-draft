@@ -126,6 +126,22 @@ KDST_LAST_ROUNDS = 3  # boost K/DST to full only within this many rounds of the 
 STRATEGY_CARVEOUT_RANK = 3
 STRATEGY_CARVEOUT_METRIC = "vor"
 
+# ---------------------------------------------------------------------------
+# Risk & bye flags (Phase 5, FR-15)
+# ---------------------------------------------------------------------------
+# Age at/above which a position carries age-cliff risk.
+RISK_AGE = {"RB": 28, "WR": 30, "TE": 30, "QB": 37}
+# Durability: flag a veteran whose games-per-season (over the history window)
+# falls below this. Signals recent missed time.
+RISK_DURABILITY_AVG_GAMES = 12.0
+# Volatile market: flag when ADP std-dev is both a large share of ADP and
+# meaningfully large in absolute rounds.
+RISK_ADP_STDEV_RATIO = 0.4
+RISK_ADP_STDEV_MIN = 8.0
+# Optional score penalty when a candidate shares a bye week with a starter at the
+# same position (0 = surface the flag but don't change ranking).
+REC_BYE_CONFLICT_PENALTY = 0.0
+
 
 # ---------------------------------------------------------------------------
 # Scoring (PPR)

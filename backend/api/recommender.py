@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 
 from .. import config
+from . import flags as flag_mod
 from .draft_state import DraftState
 
 _BASE_STARTERS = {"QB": 1, "RB": 2, "WR": 2, "TE": 1, "K": 1, "DST": 1}
@@ -99,6 +100,9 @@ def recommend(board: pd.DataFrame, state: DraftState, limit: int = 10) -> list[d
     baseline = _survivor_baseline(avail, horizon)
     counts = _roster_counts(board, state.my_picked_keys)
 
+    my_keys = set(state.my_picked_keys)
+    roster_rows = board[board["key"].isin(my_keys)][["name", "position", "bye"]].to_dict("records")
+
     n_rb, n_wr = counts.get("RB", 0), counts.get("WR", 0)
     phase_a = n_rb < config.STRATEGY_TARGET_RB or n_wr < config.STRATEGY_TARGET_WR
 
@@ -111,7 +115,10 @@ def recommend(board: pd.DataFrame, state: DraftState, limit: int = 10) -> list[d
         vona = round(float(row["proj_points"]) - baseline.get(pos, row["replacement_points"]), 1)
         core = config.REC_VOR_WEIGHT * row["vor"] + config.REC_VONA_WEIGHT * vona
         mult = _multiplier(row, phase_a, counts, best_skill_metric, state.rounds_left)
-        score = round(core * mult, 2)
+
+        assessment = flag_mod.assess(row, roster_rows)
+        penalty = config.REC_BYE_CONFLICT_PENALTY if assessment["bye_conflict"] else 0.0
+        score = round(core * mult - penalty, 2)
 
         carve = (
             phase_a and pos in ("QB", "TE")
@@ -134,6 +141,9 @@ def recommend(board: pd.DataFrame, state: DraftState, limit: int = 10) -> list[d
                 "adp": None if pd.isna(row.get("adp")) else float(row["adp"]),
                 "score": score,
                 "reason": _reason(row, vona, phase_a, needed, horizon, carve),
+                "risk": assessment["risk"],
+                "flags": assessment["flags"],
+                "bye_conflict": assessment["bye_conflict"],
             }
         )
 
