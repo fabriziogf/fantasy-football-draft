@@ -65,6 +65,6 @@ keep state synced with the real draft.
 - [x] Repo created, plan written
 - [x] Phase 1: data + projections
 - [x] Phase 2: valuation (ADP merge, VOR, tiers, unified board)
-- [ ] Phase 3: API
+- [x] Phase 3: API (draft state, snake math, persistence, VONA recommender)
 - [ ] Phase 4: UI
 - [ ] Phase 5: polish

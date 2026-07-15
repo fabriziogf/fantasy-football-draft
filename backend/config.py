@@ -91,6 +91,43 @@ KDST_BASELINE = {
 TIER_GAP_PERCENTILE = 75
 
 # ---------------------------------------------------------------------------
+# Recommender (Phase 3)
+# ---------------------------------------------------------------------------
+# A pick's core score blends static value (VOR) with scarcity (VONA: value over
+# the best player at the position likely to survive to your next pick).
+REC_VOR_WEIGHT = 0.5
+REC_VONA_WEIGHT = 0.5
+
+# FR-10 strategy: accumulate this many RB/WR before shifting to roster-need
+# filling. Until then, RB/WR are prioritized and QB/TE/K/DST are damped.
+STRATEGY_TARGET_RB = 2
+STRATEGY_TARGET_WR = 3
+
+# Positional multipliers applied to the core score.
+#   phase A = still accumulating the RB/WR core (FR-10).
+#   phase B = roster-need filling.
+NEED_MULT_PHASE_A = {
+    "RB": 1.0, "WR": 1.0,   # the core we're building
+    "QB": 0.5, "TE": 0.5,   # allowed only via the top-3 value carve-out below
+    "K": 0.1, "DST": 0.1,   # essentially off the board early
+}
+# Phase B multipliers by whether the position still has an unfilled starter slot.
+NEED_MULT_PHASE_B_NEEDED = 1.0
+NEED_MULT_PHASE_B_DEPTH = 0.4
+# K/DST stay suppressed until the final rounds even when a slot is open.
+NEED_MULT_KDST_EARLY = 0.2
+KDST_LAST_ROUNDS = 3  # boost K/DST to full only within this many rounds of the end
+
+# Carve-out (FR-10): in phase A, a top-N QB/TE earns full priority only if it
+# beats the best available RB/WR on this metric. "vor" reads the requirement's
+# "outscore" as value-over-replacement (raw points always favor QBs), so the
+# carve-out fires on genuine value, not position. Set to "proj_points" for a
+# literal points comparison.
+STRATEGY_CARVEOUT_RANK = 3
+STRATEGY_CARVEOUT_METRIC = "vor"
+
+
+# ---------------------------------------------------------------------------
 # Scoring (PPR)
 # ---------------------------------------------------------------------------
 SCORING = {

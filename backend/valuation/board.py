@@ -90,8 +90,11 @@ def build_board(use_cache: bool = True) -> pd.DataFrame:
     )
     board = board.sort_values("overall_rank").reset_index(drop=True)
 
+    # Stable identifier for the API / draft state (survives board rebuilds).
+    board["key"] = board["name_key"] + "|" + board["position"]
+
     cols = [
-        "overall_rank", "name", "position", "team", "bye", "age",
+        "key", "overall_rank", "name", "position", "team", "bye", "age",
         "proj_points", "proj_source", "vor", "pos_rank", "tier",
         "adp", "adp_stdev", "replacement_points", "player_id",
     ]
