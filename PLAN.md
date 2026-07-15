@@ -63,8 +63,8 @@ keep state synced with the real draft.
 ## Status
 
 - [x] Repo created, plan written
-- [ ] Phase 1: data + projections
-- [ ] Phase 2: valuation
+- [x] Phase 1: data + projections
+- [x] Phase 2: valuation (ADP merge, VOR, tiers, unified board)
 - [ ] Phase 3: API
 - [ ] Phase 4: UI
 - [ ] Phase 5: polish

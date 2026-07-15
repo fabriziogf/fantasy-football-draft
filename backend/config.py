@@ -60,6 +60,36 @@ BENCH_SLOTS = 6
 # K and DST are streamed/late and handled separately in a later phase.
 PROJECTED_POSITIONS = ("QB", "RB", "WR", "TE")
 
+# All positions that appear on the draft board.
+DRAFT_POSITIONS = ("QB", "RB", "WR", "TE", "K", "DST")
+
+# How the league's FLEX starters are expected to be spent across positions, used
+# when computing replacement level (a flex spot deepens RB/WR starter demand).
+FLEX_ALLOCATION = {"RB": 0.5, "WR": 0.5, "TE": 0.0}
+
+# ---------------------------------------------------------------------------
+# K / DST baseline projections
+# ---------------------------------------------------------------------------
+# nflverse offensive data has no K or DST scoring, so these two positions can't
+# come from our stat model. Their fantasy-point spread is small and well-known,
+# so we place them on a simple, documented per-rank baseline: the rank-r player
+# scores ``top - decay * (r - 1)`` points. This is a coarse domain-knowledge
+# anchor (not an imported projection set); a data-driven K/DST model built from
+# play-by-play is a future improvement. Values only need to be roughly right
+# because K/DST are drafted late and have shallow tiers.
+KDST_BASELINE = {
+    "K": {"top": 150.0, "decay": 2.0},
+    "DST": {"top": 130.0, "decay": 2.0},
+}
+
+# ---------------------------------------------------------------------------
+# Tiers
+# ---------------------------------------------------------------------------
+# A new tier starts when the projected-points gap to the previous player at that
+# position exceeds this percentile of the position's inter-player gaps. Higher =
+# fewer, coarser tiers.
+TIER_GAP_PERCENTILE = 75
+
 # ---------------------------------------------------------------------------
 # Scoring (PPR)
 # ---------------------------------------------------------------------------
